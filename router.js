@@ -17,5 +17,7 @@ router.get('/signin',c_user.showSignin);//参二：回调
 router.post('/signin',c_user.handleSignin),
 
 //渲染话题页
-router.get('/',c_topic.showTopic);
+router
+    .get('/',c_topic.showTopic)
+    .get('/signout',c_user.handleSignout);
 module.exports = router;

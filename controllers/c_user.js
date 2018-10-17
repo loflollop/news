@@ -17,7 +17,7 @@ const showSignin = (req, res) => {
 const handleSignin = (req, res) => {
     //1.获取表单数据
     const body = req.body;
-    console.log(body);
+    // console.log(body);
 
     // 调用Models中的验证邮箱的方法
     // 目的: 获取数据库操作返回的结果err, data
@@ -45,6 +45,18 @@ const handleSignin = (req, res) => {
                 message: '密码错误' 
             })
         }
+        //把正确的用户信息data[0]保存起来  session
+        //body-parser ->req.body
+        //express-art-template ->res.render
+        //express-session ->req.session
+        
+        // express-session包 保存的数据 不是持久化保存
+        // mysql包  express-mysql-session
+        //  express-mysql-session: 
+        // 把express-session保存的信息req.session自动保存在数据库中
+        req.session.user = data[0];
+        // console.log(req.session.user);
+        
         //4.跳转到话题列表页
         res.send({
             code: 200,
@@ -71,6 +83,13 @@ const handleSignin = (req, res) => {
     //         res.redirect('/');//重定向
     //     })
 };
+//处理用户退出的请求
+exports.handleSignout = (req,res)=>{
+    //清除session 中的保存的用户信息
+    delete req.session.user;
+    //跳转到用户登录页
+    res.redirect('/signin');
+}
     //导出  登录页
     exports.showSignin = showSignin;
     exports.handleSignin = handleSignin;
